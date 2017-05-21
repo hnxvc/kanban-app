@@ -1,0 +1,21 @@
+.CheckList ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.CheckList ul li {
+  text-align: left;
+}
+
+.Checklist__task:first-child {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: dashed 1px #ddd;
+}
+
+.Checklist__task--remove:after {
+  display: inline-block;
+  color: #d66;
+  content: "+";
+}

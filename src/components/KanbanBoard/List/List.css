@@ -1,0 +1,26 @@
+.List {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  white-space: normal;
+  height: 100%;
+  width: 33%;
+  padding: 0 20px;
+  overflow: auto;
+}
+
+.List:not(:last-child):after{
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 99%;
+  background: linear-gradient(to bottom, #eee 0%, #ccc 50%, #eee 100%) fixed;
+}
+
+.List__title {
+  font-weight: 200;
+  color: #3b414c;
+  font-size: 20px;
+}
