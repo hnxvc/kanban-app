@@ -1,17 +1,17 @@
 import React from 'react';
 import './Card.css';
-
+import PropTypes from 'prop-types';
 import CheckList from './CheckList/CheckList';
 
 class Card extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return(
       <div className="Card">
-        <CheckList />
+        <h4 className="Card__title">{this.props.title}</h4>
+        <div className="Card__details">
+          <p className="Card__descrition">{this.props.description}</p>
+          <CheckList id={this.props.id} tasks={this.props.tasks}/>
+        </div>
       </div>
     );
   }
@@ -22,7 +22,10 @@ Card.defaultProps = {
 };
 
 Card.propTypes = {
-  children: React.PropTypes.element.isRequired
+  id: PropTypes.number,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  task: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default Card;
