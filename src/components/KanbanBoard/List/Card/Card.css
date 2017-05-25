@@ -26,3 +26,21 @@
 .Card__title--is-open:before {
   content: 'v';
 }
+
+.fadeTransition-enter {
+  opacity: 0.01;
+}
+
+.fadeTransition-enter.fadeTransition-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.fadeTransition-leave {
+  opacity: 1;
+}
+
+.fadeTransition-leave.fadeTransition-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}
