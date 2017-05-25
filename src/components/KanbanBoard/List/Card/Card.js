@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import CheckList from './CheckList/CheckList';
 import classNames from 'classnames';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import marked from 'marked';
 
 class Card extends React.Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class Card extends React.Component {
           {
             this.state.isShowDetails &&
             <div className="Card__details">
-              <p className="Card__descrition">{this.props.description}</p>
+              <p className="Card__descrition" dangerouslySetInnerHTML={{__html: marked(this.props.description)}} />
               <CheckList id={this.props.id} tasks={this.props.tasks}/>
             </div>
           }
