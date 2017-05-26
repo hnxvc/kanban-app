@@ -18,8 +18,20 @@ class Card extends React.Component {
       'Card__title',
       {'Card__title--is-open': this.state.isShowDetails}
     );
+
+    let sideColor = {
+      position: 'absolute',
+      zIndex: -1,
+      top: 0,
+      bottom: 0,
+      left: 0,
+      width: 7,
+      backgroundColor: this.props.color
+    };
+
     return(
       <div className="Card">
+        <div style={sideColor}/>
         <h4 className={titleClass}
           onClick={()=> this.setState({isShowDetails: !this.state.isShowDetails})}
           >{this.props.title}</h4>

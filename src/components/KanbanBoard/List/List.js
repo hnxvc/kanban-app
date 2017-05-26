@@ -12,6 +12,7 @@ class List extends React.Component {
         title={card.title}
         description={card.description}
         tasks={card.tasks}
+        color={card.color}
       />
     });
 
