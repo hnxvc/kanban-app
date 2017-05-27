@@ -16,6 +16,15 @@
 
 .Checklist__task--remove:after {
   display: inline-block;
+  cursor: pointer;
   color: #d66;
-  content: "+";
+  content: "x";
+}
+
+.CheckList--add-task {
+  border: 1px dashed #bbb;
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 3px;
 }

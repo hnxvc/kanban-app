@@ -22,16 +22,35 @@ class KanbanBoard extends React.Component {
 
     return(
       <div className="KanbanBoard">
-        <List id="todo" title="Todo" cards={todoList}/>
-        <List id="in-progress" title="Progress" cards={inProgreesList}/>
-        <List id="done" title="Done"  cards={doneList}/>
+        <List
+          id="todo"
+          title="Todo"
+          cards={todoList}
+          taskCallbacks={this.props.taskCallbacks}
+        />
+
+        <List
+          id="in-progress"
+          title="Progress"
+          cards={inProgreesList}
+          taskCallbacks={this.props.taskCallbacks}
+        />
+
+        <List
+          id="done"
+          title="Done"
+          cards={doneList}
+          taskCallbacks={this.props.taskCallbacks}
+        />
+        
       </div>
     );
   }
 }
 
 KanbanBoard.propTypes = {
-  cards: PropTypes.arrayOf(PropTypes.object)
+  cards: PropTypes.arrayOf(PropTypes.object),
+  taskCallbacks: PropTypes.objectOf(PropTypes.func)
 };
 
 export default KanbanBoard;

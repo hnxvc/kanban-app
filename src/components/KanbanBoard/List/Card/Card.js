@@ -43,7 +43,11 @@ class Card extends React.Component {
             this.state.isShowDetails &&
             <div className="Card__details">
               <p className="Card__descrition" dangerouslySetInnerHTML={{__html: marked(this.props.description)}} />
-              <CheckList id={this.props.id} tasks={this.props.tasks}/>
+              <CheckList
+                cardId={this.props.cardId}
+                tasks={this.props.tasks}
+                taskCallbacks={this.props.taskCallbacks}
+              />
             </div>
           }
         </CSSTransitionGroup>
@@ -57,10 +61,11 @@ Card.defaultProps = {
 };
 
 Card.propTypes = {
-  id: PropTypes.number,
+  cardId: PropTypes.number,
   title: PropTypes.string,
   description: PropTypes.string,
-  task: PropTypes.arrayOf(PropTypes.object)
+  task: PropTypes.arrayOf(PropTypes.object),
+  taskCallbacks: PropTypes.objectOf(PropTypes.func)
 };
 
 export default Card;

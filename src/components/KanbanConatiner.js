@@ -8,7 +8,23 @@ class KanbanContainer extends React.Component {
     super(props);
     this.state = {
       cardsList: []
-    }
+    };
+
+    this.addTask = this.addTask.bind(this);
+    this.removeTask = this.removeTask.bind(this);
+    this.toggleTask = this.toggleTask.bind(this);
+  }
+
+  addTask(cardId, taskName) {
+    console.log('REMOVEME add task', cardId, taskName);
+  }
+
+  removeTask(cardId, taskId, taskIndex) {
+    console.log('REMOVEME remove task', cardId, taskId, taskIndex);
+  }
+
+  toggleTask(cardId, taskId, taskIndex) {
+    console.log('REMOVEME toggle task', cardId, taskId, taskIndex);
   }
 
   componentDidMount() {
@@ -27,7 +43,13 @@ class KanbanContainer extends React.Component {
   render() {
     return(
       <div className="KanbanContainer">
-        <KanbanBoard cards={this.state.cardsList}/>
+        <KanbanBoard
+          taskCallbacks={{
+            add: this.addTask,
+            remove: this.removeTask,
+            toggle: this.toggleTask
+          }}
+          cards={this.state.cardsList}/>
       </div>
     );
   }

@@ -8,11 +8,12 @@ class List extends React.Component {
     let cards = this.props.cards.map(card => {
       return <Card
         key={card.id}
-        id={card.id}
+        cardId={card.id}
         title={card.title}
         description={card.description}
         tasks={card.tasks}
         color={card.color}
+        taskCallbacks={this.props.taskCallbacks}
       />
     });
 
@@ -31,7 +32,8 @@ List.defaultProps = {
 
 List.propTypes = {
   title: PropTypes.string,
-  cards: PropTypes.arrayOf(PropTypes.object)
+  cards: PropTypes.arrayOf(PropTypes.object),
+  taskCallbacks: PropTypes.objectOf(PropTypes.func)
 };
 
 export default List;
