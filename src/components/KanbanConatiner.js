@@ -51,7 +51,7 @@ class KanbanContainer extends React.Component {
       }
     })
     .then(response => {
-      console.log('Update success', response);
+      console.log('Add success', response);
     })
     .catch(error => {
       console.log('Error', error);
@@ -97,7 +97,42 @@ class KanbanContainer extends React.Component {
   }
 
   toggleTask(cardId, taskId, taskIndex) {
-    console.log('REMOVEME toggle task', cardId, taskId, taskIndex);
+    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
+    let prevState = fromJS(this.state.cards);
+
+    let newStatus;
+    let updateTask = prevState.getIn([cardIndex,"tasks"]);
+    updateTask = updateTask.updateIn([taskIndex,'done'], val=> {
+      newStatus = !val;
+      return newStatus;
+    });
+
+    let nextState = prevState.setIn([cardIndex, 'tasks'], updateTask.toJS());
+
+    this.setState({
+      cards: nextState.toJS()
+    });
+
+    fetch(API_URL+'/cards/'+cardId+'/tasks/'+taskId,{
+      method: 'PUT',
+      headers: API_HEADERS,
+      body: JSON.stringify({done:newStatus})
+    })
+    .then(response => {
+      if(response.ok) {
+        console.log('Update success ', response);
+        return response;
+      } else {
+        throw new Error('Server response wasn\'t OK');
+      }
+    })
+    .catch(error => {
+      console.log('Error ', error);
+      this.setState({
+        cards: prevState.toJS()
+      });
+    });
+
   }
 
   componentDidMount() {
@@ -109,8 +144,6 @@ class KanbanContainer extends React.Component {
       this.setState({
         cards: result
       });
-
-      console.log('REMOVEME -- cards', this.state.cards);
     })
     .catch(err => {
       console.log('ERROR ---', err);
