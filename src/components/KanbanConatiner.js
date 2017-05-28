@@ -62,7 +62,38 @@ class KanbanContainer extends React.Component {
   }
 
   removeTask(cardId, taskId, taskIndex) {
-    console.log('REMOVEME remove task', cardId, taskId, taskIndex);
+    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
+
+    let prevState = fromJS(this.state.cards);
+
+    let newTasks = prevState.getIn([cardIndex,"tasks"]);
+    newTasks = newTasks.delete(taskIndex);
+
+    let nextState = prevState.setIn([cardIndex, 'tasks'], newTasks.toJS());
+
+    this.setState({
+      cards: nextState.toJS()
+    });
+
+    fetch(API_URL+'/cards/'+cardId+'/tasks/'+taskId,{
+      method: 'DELETE',
+      headers: API_HEADERS
+    })
+    .then(response => {
+      if(response.ok) {
+        console.log('Remove success ', response);
+        return response;
+      } else {
+        throw new Error('Server response wasn\'t OK');
+      }
+    })
+    .catch(error => {
+      console.log('Error ', error);
+      this.setState({
+        cards: prevState.toJS()
+      });
+    });
+
   }
 
   toggleTask(cardId, taskId, taskIndex) {
@@ -78,6 +109,8 @@ class KanbanContainer extends React.Component {
       this.setState({
         cards: result
       });
+
+      console.log('REMOVEME -- cards', this.state.cards);
     })
     .catch(err => {
       console.log('ERROR ---', err);
