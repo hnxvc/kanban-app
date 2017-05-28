@@ -8,6 +8,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "history": "^4.6.1",
+    "immutable": "^3.8.1",
     "marked": "^0.3.6",
     "react": "^15.5.4",
     "react-dnd": "^2.4.0",

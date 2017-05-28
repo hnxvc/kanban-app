@@ -1,13 +1,17 @@
 import React from 'react';
 import KanbanBoard from './KanbanBoard/KanbanBoard';
+import { fromJS, toJS } from 'immutable';
 import 'whatwg-fetch';
 const API_URL = 'http://kanbanapi.pro-react.com';
+const API_HEADERS = {
+  'Content-Type': 'application/json',
+};
 
 class KanbanContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      cardsList: []
+      cards: []
     };
 
     this.addTask = this.addTask.bind(this);
@@ -16,7 +20,45 @@ class KanbanContainer extends React.Component {
   }
 
   addTask(cardId, taskName) {
-    console.log('REMOVEME add task', cardId, taskName);
+    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
+    let prevState = fromJS(this.state.cards);
+
+    let newTask = {
+      id: Date.now(),
+      name: taskName,
+      done: false
+    };
+
+    let newTasks = prevState.getIn([cardIndex,"tasks"]);
+    newTasks = newTasks.push(newTask);
+
+    let nextState = prevState.setIn([cardIndex, 'tasks'], newTasks.toJS());
+
+    this.setState({
+      cards: nextState.toJS()
+    });
+
+    fetch(API_URL+'/cards/'+cardId+'/tasks', {
+      method: 'POST',
+      headers: API_HEADERS,
+      body: JSON.stringify(newTask)
+    })
+    .then(response => {
+      if(response.ok) {
+        return response.json()
+      } else {
+        throw new Error('Server response wasn\'t OK');
+      }
+    })
+    .then(response => {
+      console.log('Update success', response);
+    })
+    .catch(error => {
+      console.log('Error', error);
+      this.setState({
+        cards: prevState.toJS()
+      });
+    });
   }
 
   removeTask(cardId, taskId, taskIndex) {
@@ -28,11 +70,13 @@ class KanbanContainer extends React.Component {
   }
 
   componentDidMount() {
-    fetch(API_URL+'/cards')
+    fetch(API_URL+'/cards', {
+      headers: API_HEADERS
+    })
     .then(result => result.json())
     .then(result => {
       this.setState({
-        cardsList: result
+        cards: result
       });
     })
     .catch(err => {
@@ -49,7 +93,7 @@ class KanbanContainer extends React.Component {
             remove: this.removeTask,
             toggle: this.toggleTask
           }}
-          cards={this.state.cardsList}/>
+          cards={this.state.cards}/>
       </div>
     );
   }
