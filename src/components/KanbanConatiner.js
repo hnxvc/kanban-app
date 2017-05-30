@@ -1,6 +1,6 @@
 import React from 'react';
 import KanbanBoard from './KanbanBoard/KanbanBoard';
-import { fromJS, toJS } from 'immutable';
+import { fromJS, toJS, set } from 'immutable';
 import 'whatwg-fetch';
 const API_URL = 'http://kanbanapi.pro-react.com';
 const API_HEADERS = {
@@ -17,6 +17,23 @@ class KanbanContainer extends React.Component {
     this.addTask = this.addTask.bind(this);
     this.removeTask = this.removeTask.bind(this);
     this.toggleTask = this.toggleTask.bind(this);
+    this.updateCardStatus = this.updateCardStatus.bind(this);
+  }
+
+  updateCardStatus(cardId, listId) {
+    let prevState = fromJS(this.state.cards);
+
+    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
+    let card = prevState.get(cardIndex);
+    card = card.set('status', listId);
+    
+    let nextState = prevState.set(cardIndex, card);
+
+    if(card.status !== listId) {
+      this.setState({
+        cards: nextState.toJS()
+      });
+    }
   }
 
   addTask(cardId, taskName) {
@@ -151,8 +168,10 @@ class KanbanContainer extends React.Component {
   }
 
   render() {
+    console.log('REMOVEME --- cards', this.state.cards);
     return(
       <div className="KanbanContainer">
+        <button onClick={() => this.updateCardStatus(6941, 'in-progress')}>Update status</button>
         <KanbanBoard
           taskCallbacks={{
             add: this.addTask,
