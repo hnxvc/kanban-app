@@ -18,6 +18,7 @@ class KanbanContainer extends React.Component {
     this.removeTask = this.removeTask.bind(this);
     this.toggleTask = this.toggleTask.bind(this);
     this.updateCardStatus = this.updateCardStatus.bind(this);
+    this.updateCardPosition = this.updateCardPosition.bind(this);
   }
 
   updateCardStatus(cardId, listId) {
@@ -26,7 +27,7 @@ class KanbanContainer extends React.Component {
     let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
     let card = prevState.get(cardIndex);
     card = card.set('status', listId);
-    
+
     let nextState = prevState.set(cardIndex, card);
 
     if(card.status !== listId) {
@@ -34,6 +35,26 @@ class KanbanContainer extends React.Component {
         cards: nextState.toJS()
       });
     }
+  }
+
+  updateCardPosition(cardId, afterId) {
+    if(cardId === afterId) {
+      return;
+    }
+
+    let prevState = fromJS(this.state.cards);
+
+    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
+    let card = prevState.get(cardIndex);
+
+    let afterIndex = this.state.cards.findIndex(card => card.id ===afterId);
+
+    let nextState = prevState.delete(cardIndex);
+    nextState = nextState.insert(afterIndex, card);
+    this.setState({
+      cards: nextState.toJS()
+    });
+    
   }
 
   addTask(cardId, taskName) {
@@ -172,6 +193,7 @@ class KanbanContainer extends React.Component {
     return(
       <div className="KanbanContainer">
         <button onClick={() => this.updateCardStatus(6941, 'in-progress')}>Update status</button>
+        <button onClick={() => this.updateCardPosition(6940, 6941)}>Update position</button>
         <KanbanBoard
           taskCallbacks={{
             add: this.addTask,
