@@ -54,7 +54,7 @@ class KanbanContainer extends React.Component {
     this.setState({
       cards: nextState.toJS()
     });
-    
+
   }
 
   addTask(cardId, taskName) {
@@ -192,15 +192,18 @@ class KanbanContainer extends React.Component {
     console.log('REMOVEME --- cards', this.state.cards);
     return(
       <div className="KanbanContainer">
-        <button onClick={() => this.updateCardStatus(6941, 'in-progress')}>Update status</button>
-        <button onClick={() => this.updateCardPosition(6940, 6941)}>Update position</button>
         <KanbanBoard
           taskCallbacks={{
             add: this.addTask,
             remove: this.removeTask,
             toggle: this.toggleTask
           }}
-          cards={this.state.cards}/>
+          cardCallbacks={{
+            updateCardPosition: this.updateCardPosition,
+            updateCardStatus: this.updateCardStatus
+          }}
+          cards={this.state.cards}
+        />
       </div>
     );
   }

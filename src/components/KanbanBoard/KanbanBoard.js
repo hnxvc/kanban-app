@@ -1,7 +1,8 @@
 import React from 'react';
 import './KanbanBoard.css';
 import PropTypes from 'prop-types';
-
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import List from './List/List';
 
 class KanbanBoard extends React.Component {
@@ -27,6 +28,7 @@ class KanbanBoard extends React.Component {
           title="Todo"
           cards={todoList}
           taskCallbacks={this.props.taskCallbacks}
+          cardCallbacks={this.props.cardCallbacks}
         />
 
         <List
@@ -34,6 +36,7 @@ class KanbanBoard extends React.Component {
           title="Progress"
           cards={inProgreesList}
           taskCallbacks={this.props.taskCallbacks}
+          cardCallbacks={this.props.cardCallbacks}
         />
 
         <List
@@ -41,8 +44,9 @@ class KanbanBoard extends React.Component {
           title="Done"
           cards={doneList}
           taskCallbacks={this.props.taskCallbacks}
+          cardCallbacks={this.props.cardCallbacks}
         />
-        
+
       </div>
     );
   }
@@ -50,7 +54,8 @@ class KanbanBoard extends React.Component {
 
 KanbanBoard.propTypes = {
   cards: PropTypes.arrayOf(PropTypes.object),
-  taskCallbacks: PropTypes.objectOf(PropTypes.func)
+  taskCallbacks: PropTypes.objectOf(PropTypes.func),
+  cardCallbacks: PropTypes.objectOf(PropTypes.func)
 };
 
-export default KanbanBoard;
+export default DragDropContext(HTML5Backend)( KanbanBoard);
