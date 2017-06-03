@@ -189,7 +189,6 @@ class KanbanContainer extends React.Component {
   }
 
   render() {
-    console.log('REMOVEME --- cards', this.state.cards);
     return(
       <div className="KanbanContainer">
         <KanbanBoard

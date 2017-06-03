@@ -11,7 +11,7 @@ import constants from '../../../../constants';
 const cardDragSpec = {
   beginDrag(props) {
     return {
-      id: props.id
+      cardId: props.cardId
     };
   }
 }
