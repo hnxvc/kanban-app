@@ -1,6 +1,7 @@
 import React from 'react';
 import KanbanBoard from './KanbanBoard/KanbanBoard';
 import { fromJS, toJS, set } from 'immutable';
+import { throttle } from '../utils/utils';
 import 'whatwg-fetch';
 const API_URL = 'http://kanbanapi.pro-react.com';
 const API_HEADERS = {
@@ -17,8 +18,8 @@ class KanbanContainer extends React.Component {
     this.addTask = this.addTask.bind(this);
     this.removeTask = this.removeTask.bind(this);
     this.toggleTask = this.toggleTask.bind(this);
-    this.updateCardStatus = this.updateCardStatus.bind(this);
-    this.updateCardPosition = this.updateCardPosition.bind(this);
+    this.updateCardStatus = throttle(this.updateCardStatus.bind(this));
+    this.updateCardPosition = throttle(this.updateCardPosition.bind(this));
   }
 
   updateCardStatus(cardId, listId) {
@@ -38,6 +39,7 @@ class KanbanContainer extends React.Component {
   }
 
   updateCardPosition(cardId, afterId) {
+    console.log('test');
     if(cardId === afterId) {
       return;
     }
