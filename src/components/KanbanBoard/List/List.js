@@ -20,11 +20,13 @@ function collect(connect, monitor) {
 
 class List extends React.Component {
   render() {
+
     const { connectDropTarget } = this.props;
     let cards = this.props.cards.map(card => {
       return <Card
         key={card.id}
         cardId={card.id}
+        status={card.status}
         title={card.title}
         description={card.description}
         tasks={card.tasks}
@@ -48,6 +50,7 @@ List.defaultProps = {
 };
 
 List.propTypes = {
+  id: PropTypes.string,
   title: PropTypes.string,
   cards: PropTypes.arrayOf(PropTypes.object),
   taskCallbacks: PropTypes.objectOf(PropTypes.func),

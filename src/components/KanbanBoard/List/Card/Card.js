@@ -11,8 +11,13 @@ import constants from '../../../../constants';
 const cardDragSpec = {
   beginDrag(props) {
     return {
-      cardId: props.cardId
+      cardId: props.cardId,
+      status: props.status
     };
+  },
+
+  endDrag(props) {
+    props.cardCallbacks.persistCardDrag(props.cardId, props.status);
   }
 }
 
@@ -43,6 +48,7 @@ class Card extends React.Component {
     }
   }
   render() {
+
     const { connectDragSource, connectDropTarget } = this.props;
 
     let titleClass = classNames(

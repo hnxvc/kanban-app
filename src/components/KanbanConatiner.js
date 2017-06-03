@@ -20,6 +20,7 @@ class KanbanContainer extends React.Component {
     this.toggleTask = this.toggleTask.bind(this);
     this.updateCardStatus = throttle(this.updateCardStatus.bind(this));
     this.updateCardPosition = throttle(this.updateCardPosition.bind(this));
+    this.persistCardDrag = this.persistCardDrag.bind(this);
   }
 
   updateCardStatus(cardId, listId) {
@@ -39,7 +40,6 @@ class KanbanContainer extends React.Component {
   }
 
   updateCardPosition(cardId, afterId) {
-    console.log('test');
     if(cardId === afterId) {
       return;
     }
@@ -57,6 +57,38 @@ class KanbanContainer extends React.Component {
       cards: nextState.toJS()
     });
 
+  }
+
+  persistCardDrag(cardId, status) {
+    let cardIndex = this.state.cards.findIndex(card => card.id===cardId);
+    let card = this.state.cards[cardIndex];
+
+    fetch(API_URL+'/cards/'+cardId, {
+      method: 'PUT',
+      headers: API_HEADERS,
+      body: JSON.stringify({
+        status: card.status,
+        row_order_position: cardIndex
+      })
+    })
+    .then(response => {
+      if(!response.ok) {
+        throw new Error('Server response was not ok');
+      } else {
+        return response.json();
+      }
+    })
+    .then(response => {
+      console.log('Update card success', response);
+      return null;
+    })
+    .catch(error => {
+      console.log('Update card error', error);
+      // FIXME: revert back when update fail
+      // this.setState({
+      //
+      // });
+    });
   }
 
   addTask(cardId, taskName) {
@@ -201,7 +233,8 @@ class KanbanContainer extends React.Component {
           }}
           cardCallbacks={{
             updateCardPosition: this.updateCardPosition,
-            updateCardStatus: this.updateCardStatus
+            updateCardStatus: this.updateCardStatus,
+            persistCardDrag: this.persistCardDrag
           }}
           cards={this.state.cards}
         />
