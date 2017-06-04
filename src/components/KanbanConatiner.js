@@ -1,6 +1,6 @@
 import React from 'react';
 import KanbanBoard from './KanbanBoard/KanbanBoard';
-import { fromJS, toJS, set } from 'immutable';
+import { fromJS, toJS } from 'immutable';
 import { throttle } from '../utils/utils';
 import 'whatwg-fetch';
 const API_URL = 'http://kanbanapi.pro-react.com';

@@ -1,0 +1,57 @@
+.CardForm.CardForm--big {
+  position: absolute;
+  width: 450px;
+  background: #fff;
+  margin: 100px auto 0;
+  padding: 15px;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  text-align: left;
+}
+
+.CardForm.CardForm--big input[type=text],
+.CardForm.CardForm--big textarea {
+  width : 100%;
+  margin: 3px 0;
+  font-size: 13px;
+  border: none;
+}
+
+.CardForm.CardForm--big input[type=text] {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.CardForm.CardForm--big input[type=text]:focus,
+.CardForm.CardForm--big textarea:focus {
+  outline: dashed thin #999;
+  outline-offset: 2px;
+}
+
+.CardForm.CardForm--big label {
+  margin: 3px 0 7px 3px;
+  color: #a7a7a7;
+  display: inline-block;
+  width: 60px;
+}
+
+.actions {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.CardForm.CardForm--big button {
+  font-size:14px;
+  padding: 8px;
+}
+
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  top: 0; left: 0; bottom: 0; right: 0;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.6);
+}
