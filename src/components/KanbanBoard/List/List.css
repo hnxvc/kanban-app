@@ -7,7 +7,7 @@
   width: 33%;
   padding: 0 20px;
   overflow: auto;
-  min-height: 500px;
+  min-height: 300px;
 }
 
 .List:not(:last-child):after{
