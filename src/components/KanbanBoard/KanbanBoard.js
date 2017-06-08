@@ -3,7 +3,6 @@ import './KanbanBoard.css';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import NewCard from './NewCard/NewCard';
 import List from './List/List';
 
 class KanbanBoard extends React.Component {
@@ -47,9 +46,6 @@ class KanbanBoard extends React.Component {
           taskCallbacks={this.props.taskCallbacks}
           cardCallbacks={this.props.cardCallbacks}
         />
-
-        <NewCard />
-
       </div>
     );
   }
