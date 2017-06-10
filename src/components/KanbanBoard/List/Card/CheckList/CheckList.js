@@ -16,6 +16,10 @@ class CheckList extends React.Component {
   }
 
   render() {
+    if(!this.props.tasks) {
+      return null
+    };
+
     let tasks = this.props.tasks.map((task, index) => {
       return <li
                 className="CheckList__task"

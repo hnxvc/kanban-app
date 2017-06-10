@@ -24,17 +24,17 @@ class KanbanContainer extends React.Component {
     // this.updateCardPosition = throttle(this.updateCardPosition.bind(this));
     this.updateCardPosition = this.updateCardPosition.bind(this);
     this.persistCardDrag = this.persistCardDrag.bind(this);
+    this.addCard = this.addCard.bind(this);
+    this.updateCard = this.updateCard.bind(this);
   }
 
   addCard(card) {
     let prevState = fromJS(this.state.cards);
-    if(card.id === null) {
-      let card = Object.assign({}, card, {id: Date.now()})
-    }
-
-    let nextState = prevState.merge(card);
-
-    this.setState({ cards: nextState });
+    card.id = Date.now();
+    let nextState = prevState.push(card);
+    this.setState({
+      cards: nextState.toJS()
+    });
 
     // [TODO] Add card with API
 

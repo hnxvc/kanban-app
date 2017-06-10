@@ -27,9 +27,6 @@ class KanbanBoard extends React.Component {
       cardCallbacks: this.props.cardCallbacks }
     );
 
-    console.log('REMOEME === cardModal', cardModal);
-    console.log('REMOEME === children', this.props.children);
-
     return(
       <div className="KanbanBoard">
         <List
