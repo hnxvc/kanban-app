@@ -18,8 +18,11 @@ class KanbanContainer extends React.Component {
     this.addTask = this.addTask.bind(this);
     this.removeTask = this.removeTask.bind(this);
     this.toggleTask = this.toggleTask.bind(this);
-    this.updateCardStatus = throttle(this.updateCardStatus.bind(this));
-    this.updateCardPosition = throttle(this.updateCardPosition.bind(this));
+    this.updateCardStatus = this.updateCardStatus.bind(this);
+    // FIXME: Why use throttle can't update status
+    // this.updateCardStatus = throttle(this.updateCardStatus.bind(this));
+    // this.updateCardPosition = throttle(this.updateCardPosition.bind(this));
+    this.updateCardPosition = this.updateCardPosition.bind(this);
     this.persistCardDrag = this.persistCardDrag.bind(this);
   }
 
@@ -63,6 +66,10 @@ class KanbanContainer extends React.Component {
     let cardIndex = this.state.cards.findIndex(card => card.id===cardId);
     let card = this.state.cards[cardIndex];
 
+    if(card.status === status) {
+      return;
+    }
+
     fetch(API_URL+'/cards/'+cardId, {
       method: 'PUT',
       headers: API_HEADERS,
@@ -84,7 +91,7 @@ class KanbanContainer extends React.Component {
     })
     .catch(error => {
       console.log('Update card error', error);
-      // FIXME: revert back when update fail
+      // FIXME: revert back when update failed
       // this.setState({
       //
       // });

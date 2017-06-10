@@ -8,7 +8,8 @@ import constants from '../../../constants';
 const listTargetSpec = {
   hover(props, monitor) {
     const draggedId = monitor.getItem().cardId;
-    props.cardCallbacks.updateCardStatus(draggedId, props.id)
+    let status = props.id;
+    props.cardCallbacks.updateCardStatus(draggedId, status)
   }
 }
 
