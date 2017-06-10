@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import List from './List/List';
+import { Link } from 'react-router';
 
 class KanbanBoard extends React.Component {
   render() {
@@ -20,6 +21,14 @@ class KanbanBoard extends React.Component {
     let doneList = cards.filter( card => {
       return card.status === 'done';
     });
+
+    let cardModal = this.props.children && React.cloneElement(this.props.children, {
+      cards: cards,
+      cardCallbacks: this.props.cardCallbacks }
+    );
+
+    console.log('REMOEME === cardModal', cardModal);
+    console.log('REMOEME === children', this.props.children);
 
     return(
       <div className="KanbanBoard">
@@ -46,6 +55,8 @@ class KanbanBoard extends React.Component {
           taskCallbacks={this.props.taskCallbacks}
           cardCallbacks={this.props.cardCallbacks}
         />
+        <Link to='/new' className="float-button">+</Link>
+        {cardModal}
       </div>
     );
   }

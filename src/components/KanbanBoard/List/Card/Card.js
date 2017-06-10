@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import marked from 'marked';
 import { DragSource, DropTarget } from 'react-dnd';
+import {Link} from 'react-router';
 import constants from '../../../../constants';
 
 const cardDragSpec = {
@@ -69,6 +70,7 @@ class Card extends React.Component {
     return connectDropTarget(connectDragSource(
       <div className="Card">
         <div style={sideColor}/>
+        <div className="Card__edit"><Link to={'/edit/'+this.props.cardId}>&#9998;</Link></div>
         <h4 className={titleClass}
           onClick={()=> this.setState({isShowDetails: !this.state.isShowDetails})}
           >{this.props.title}</h4>

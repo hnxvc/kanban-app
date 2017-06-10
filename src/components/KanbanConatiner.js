@@ -26,6 +26,29 @@ class KanbanContainer extends React.Component {
     this.persistCardDrag = this.persistCardDrag.bind(this);
   }
 
+  addCard(card) {
+    let prevState = fromJS(this.state.cards);
+    if(card.id === null) {
+      let card = Object.assign({}, card, {id: Date.now()})
+    }
+
+    let nextState = prevState.merge(card);
+
+    this.setState({ cards: nextState });
+
+    // [TODO] Add card with API
+
+  }
+
+  updateCard(card) {
+    let prevState = fromJS(this.state.cards)
+    let cardId = card.id;
+    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
+    let nextState = prevState.set(cardIndex, card);
+
+    // [TODO] Update card with API
+  }
+
   updateCardStatus(cardId, listId) {
     let prevState = fromJS(this.state.cards);
 
@@ -230,23 +253,42 @@ class KanbanContainer extends React.Component {
   }
 
   render() {
-    return(
-      <div className="KanbanContainer">
-        <KanbanBoard
-          taskCallbacks={{
-            add: this.addTask,
+    let kanbanBoard = this.props.children && React.cloneElement(this.props.children, {
+          cards: this.state.cards,
+          taskCallbacks:{
+            toggle: this.toggleTask,
             remove: this.removeTask,
-            toggle: this.toggleTask
-          }}
-          cardCallbacks={{
-            updateCardPosition: this.updateCardPosition,
-            updateCardStatus: this.updateCardStatus,
-            persistCardDrag: this.persistCardDrag
-          }}
-          cards={this.state.cards}
-        />
-      </div>
-    );
+            add: this.addTask
+          },
+
+        cardCallbacks:{
+          addCard: this.addCard,
+          updateCard: this.updateCard,
+          updateStatus: this.updateCardStatus,
+          // updatePosition: throttle(this.updateCardPosition.bind(this),500),
+          updateCardPosition: this.updateCardPosition,
+          persistCardDrag: this.persistCardDrag
+        }
+      });
+    return kanbanBoard;
+
+    // return(
+      // <div className="KanbanContainer">
+      //   <KanbanBoard
+      //     taskCallbacks={{
+      //       add: this.addTask,
+      //       remove: this.removeTask,
+      //       toggle: this.toggleTask
+      //     }}
+      //     cardCallbacks={{
+      //       updateCardPosition: this.updateCardPosition,
+      //       updateCardStatus: this.updateCardStatus,
+      //       persistCardDrag: this.persistCardDrag
+      //     }}
+      //     cards={this.state.cards}
+      //   />
+      // </div>
+    // );
   }
 }
 
