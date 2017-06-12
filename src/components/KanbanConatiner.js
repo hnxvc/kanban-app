@@ -18,11 +18,8 @@ class KanbanContainer extends React.Component {
     this.addTask = this.addTask.bind(this);
     this.removeTask = this.removeTask.bind(this);
     this.toggleTask = this.toggleTask.bind(this);
-    this.updateCardStatus = this.updateCardStatus.bind(this);
-    // FIXME: Why use throttle can't update status
-    // this.updateCardStatus = throttle(this.updateCardStatus.bind(this));
-    // this.updateCardPosition = throttle(this.updateCardPosition.bind(this));
-    this.updateCardPosition = this.updateCardPosition.bind(this);
+    this.updateCardStatus = throttle(this.updateCardStatus.bind(this), 200);
+    this.updateCardPosition = throttle(this.updateCardPosition.bind(this), 200);
     this.persistCardDrag = this.persistCardDrag.bind(this);
     this.addCard = this.addCard.bind(this);
     this.updateCard = this.updateCard.bind(this);
@@ -130,7 +127,7 @@ class KanbanContainer extends React.Component {
       return;
     }
 
-    fetch(API_URL+'/cardss/'+cardId, {
+    fetch(API_URL+'/cards/'+cardId, {
       method: 'PUT',
       headers: API_HEADERS,
       body: JSON.stringify({
