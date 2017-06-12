@@ -130,7 +130,7 @@ class KanbanContainer extends React.Component {
       return;
     }
 
-    fetch(API_URL+'/cards/'+cardId, {
+    fetch(API_URL+'/cardss/'+cardId, {
       method: 'PUT',
       headers: API_HEADERS,
       body: JSON.stringify({
@@ -146,11 +146,14 @@ class KanbanContainer extends React.Component {
       }
     })
     .catch(error => {
-      console.log('Update card error', error);
-      // FIXME: revert back when update failed
-      // this.setState({
-      //
-      // });
+      console.log('persistCardDrag error', error);
+
+      let cards = fromJS(this.state.cards);
+      let oldCard = cards.get(cardIndex).set('status', status);
+      let prevState = cards.set(cardIndex, oldCard);
+      this.setState({
+        cards: prevState.toJS()
+      });
     });
   }
 
@@ -281,7 +284,6 @@ class KanbanContainer extends React.Component {
   }
 
   render() {
-    console.log('REMOVEME ---- this.state.cards', this.state.cards);
     let kanbanBoard = this.props.children && React.cloneElement(this.props.children, {
           cards: this.state.cards,
           taskCallbacks:{
