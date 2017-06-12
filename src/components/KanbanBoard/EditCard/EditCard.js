@@ -29,7 +29,7 @@ class EditCard extends React.Component {
   }
 
   componentWillMount() {
-    let card = this.props.cards.find(card => card.id === this.props.params.cardId);
+    let card = this.props.cards.find(card => card.id == this.props.params.card_id);
     this.setState({...card});
   }
 
@@ -37,7 +37,7 @@ class EditCard extends React.Component {
     return(
       <CardForm
         draftCard={this.state}
-        buttonLabel="Create Card"
+        buttonLabel="Update Card"
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
         handleCloseModal={this.handleCloseModal}

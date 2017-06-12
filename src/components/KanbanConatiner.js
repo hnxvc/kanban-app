@@ -43,9 +43,11 @@ class KanbanContainer extends React.Component {
   updateCard(card) {
     let prevState = fromJS(this.state.cards)
     let cardId = card.id;
-    let cardIndex = this.state.cards.findIndex(card => card.id === cardId);
+    let cardIndex = this.state.cards.findIndex(card => card.id == cardId);
     let nextState = prevState.set(cardIndex, card);
-
+    this.setState({
+      cards: nextState.toJS()
+    });
     // [TODO] Update card with API
   }
 
@@ -264,7 +266,7 @@ class KanbanContainer extends React.Component {
         cardCallbacks:{
           addCard: this.addCard,
           updateCard: this.updateCard,
-          updateStatus: this.updateCardStatus,
+          updateCardStatus: this.updateCardStatus,
           // updatePosition: throttle(this.updateCardPosition.bind(this),500),
           updateCardPosition: this.updateCardPosition,
           persistCardDrag: this.persistCardDrag
