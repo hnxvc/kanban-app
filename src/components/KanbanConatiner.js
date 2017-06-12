@@ -31,13 +31,30 @@ class KanbanContainer extends React.Component {
   addCard(card) {
     let prevState = fromJS(this.state.cards);
     card.id = Date.now();
+    card.tasks = [];
     let nextState = prevState.push(card);
     this.setState({
       cards: nextState.toJS()
     });
 
-    // [TODO] Add card with API
-
+    fetch(API_URL+'/cards', {
+      method: 'POST',
+      headers: API_HEADERS,
+      body: JSON.stringify(card)
+    })
+    .then(response => {
+      if(response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Server response wasn\'t OK');
+      }
+    })
+    .catch(err=> {
+      this.setState({
+        cards: prevState.toJS()
+      });
+      console.log('Add card error ----', err);
+    })
   }
 
   updateCard(card) {
@@ -48,7 +65,25 @@ class KanbanContainer extends React.Component {
     this.setState({
       cards: nextState.toJS()
     });
-    // [TODO] Update card with API
+
+    fetch(API_URL+'/cards/' + cardId, {
+      method: 'PUT',
+      headers: API_HEADERS,
+      body: JSON.stringify(card)
+    })
+    .then(response => {
+      if(response.ok) {
+        return response.json()
+      } else {
+        throw new Error('Server response wasn\'t OK');
+      }
+    })
+    .catch(err => {
+      console.log('Update card error', err);
+      this.setState({
+        cards: prevState.toJS()
+      });
+    })
   }
 
   updateCardStatus(cardId, listId) {
@@ -110,10 +145,6 @@ class KanbanContainer extends React.Component {
         return response.json();
       }
     })
-    .then(response => {
-      console.log('Update card success', response);
-      return null;
-    })
     .catch(error => {
       console.log('Update card error', error);
       // FIXME: revert back when update failed
@@ -154,11 +185,8 @@ class KanbanContainer extends React.Component {
         throw new Error('Server response wasn\'t OK');
       }
     })
-    .then(response => {
-      console.log('Add success', response);
-    })
     .catch(error => {
-      console.log('Error', error);
+      console.log('Add task error', error);
       this.setState({
         cards: prevState.toJS()
       });
@@ -185,14 +213,13 @@ class KanbanContainer extends React.Component {
     })
     .then(response => {
       if(response.ok) {
-        console.log('Remove success ', response);
         return response;
       } else {
         throw new Error('Server response wasn\'t OK');
       }
     })
     .catch(error => {
-      console.log('Error ', error);
+      console.log('Remove task error ', error);
       this.setState({
         cards: prevState.toJS()
       });
@@ -224,14 +251,13 @@ class KanbanContainer extends React.Component {
     })
     .then(response => {
       if(response.ok) {
-        console.log('Update success ', response);
         return response;
       } else {
         throw new Error('Server response wasn\'t OK');
       }
     })
     .catch(error => {
-      console.log('Error ', error);
+      console.log('Toggle task error ', error);
       this.setState({
         cards: prevState.toJS()
       });
@@ -250,11 +276,12 @@ class KanbanContainer extends React.Component {
       });
     })
     .catch(err => {
-      console.log('ERROR ---', err);
+      console.log('Fetch data error ---', err);
     });
   }
 
   render() {
+    console.log('REMOVEME ---- this.state.cards', this.state.cards);
     let kanbanBoard = this.props.children && React.cloneElement(this.props.children, {
           cards: this.state.cards,
           taskCallbacks:{
@@ -273,24 +300,6 @@ class KanbanContainer extends React.Component {
         }
       });
     return kanbanBoard;
-
-    // return(
-      // <div className="KanbanContainer">
-      //   <KanbanBoard
-      //     taskCallbacks={{
-      //       add: this.addTask,
-      //       remove: this.removeTask,
-      //       toggle: this.toggleTask
-      //     }}
-      //     cardCallbacks={{
-      //       updateCardPosition: this.updateCardPosition,
-      //       updateCardStatus: this.updateCardStatus,
-      //       persistCardDrag: this.persistCardDrag
-      //     }}
-      //     cards={this.state.cards}
-      //   />
-      // </div>
-    // );
   }
 }
 
